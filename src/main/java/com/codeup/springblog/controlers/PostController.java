@@ -92,6 +92,7 @@ public class PostController {
         postDao.save(newPost);
         return "redirect:/posts";
     }
+    // added this coment so i can commit on new branch//
 
 
 
