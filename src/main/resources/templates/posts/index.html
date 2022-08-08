@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment.html :: header">
+    <meta charset="UTF-8">
+
+    <title>Show all</title>
+</head>
+<body class="bg-primary">
+<nav th:replace="fragment.html :: navbar"></nav>
+<h1>Show all </h1>
+
+<main class="container row col ">
+    <div class="col card-group border border-5 border-dark d-inline margin m-4 bg-danger " th:each="post : ${posts}">
+        <h1 class="d-flex justify-content-center" th:text="${post.tittle}"></h1>
+        <p class="d-flex justify-content-center" th:text="${post.body}"></p>
+        <p class="d-flex justify-content-center" th:if="${post.user != null}" th:text="${post.user.email}"></p>
+        <p class="d-flex justify-content-center" th:if="${post.user == null}">no assigned user</p>
+        <form class="d-flex justify-content-center" action="/posts" method="post">
+                <button name="singleAd" type="submit" th:value="${post.id}">See Ad</button>
+<!--                <button name="deleteAd" type="submit" th:value="${post.id}">delete Ad</button>-->
+            </form>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragment.html :: footer"></footer>
+</body>
+</html>

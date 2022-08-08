@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragment.html :: header">
+    <meta charset="UTF-8">
+    <title>Show one</title>
+</head>
+<body>
+<nav th:replace="fragment.html :: navbar"></nav>
+<h1>Show one </h1>
+
+<main class="container">
+    <div class="col bg-primary card">
+        <h1 th:text="${post.tittle}"></h1>
+        <p th:text="${post.body}"></p>
+        <p class="d-flex justify-content-center" th:if="${post.user != null}" th:text="${post.user.email}"></p>
+        <p class="d-flex justify-content-center" th:if="${post.user == null}"> no user email</p>
+    </div>
+</main>
+</body>
+</html>

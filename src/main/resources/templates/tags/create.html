@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="/tags/create" method="post">
+
+    <label for="name">name of tag</label>
+    <input type="text" name="name" id="name">
+    <select name="post" id="post">
+        <option th:each="tag : ${tags}" th:text="${tag.name}" th:value="${post.id}"></option>
+    </select>
+    <input type="submit" class="btn btn-block btn-primary">
+</form>
+</body>
+</html>
+
+</body>
+</html>
