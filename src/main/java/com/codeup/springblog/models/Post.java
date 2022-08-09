@@ -20,19 +20,7 @@ public class Post {
     @JoinColumn(name="user_id")
     private User user;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="post_tag", joinColumns = {@JoinColumn(name="post_id")},inverseJoinColumns={@JoinColumn(name="tag_id")})
-    private List<Tag> tags;
-
-
     public Post() {
-    }
-
-    public Post(String tittle, String body, User user, List<Tag> tags) {
-        this.tittle = tittle;
-        this.body = body;
-        this.user = user;
-        this.tags = tags;
     }
 
     public Post(String tittle, String body, User user) {

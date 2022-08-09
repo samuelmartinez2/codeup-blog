@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragment.html :: header">
     <meta charset="UTF-8">
     <title>Create a post</title>
@@ -9,19 +9,19 @@
 <h1> Please create your new post</h1>
 
 <p><span id='date-time'></span></p>
-<form action="/posts/create" method="post">
-    <div class="form-group">
+<form th:action="@{/posts/create}" th:method="POST" th:object="${post}">
+    <div class="form-group" >
         <label for="tittle">Title</label>
-        <input id="tittle" name="tittle" class="form-control" type="text">
+        <input id="tittle" name="tittle" class="form-control" type="text" th:field="*{tittle}">
         <label for="body">Create post</label>
-        <textarea id="body" name="body" class="form-control" type="text"></textarea>
+        <textarea id="body" name="body" class="form-control" type="text" th:field="*{body}"></textarea>
         <select name="user" id="user">
             <option th:each="user : ${users}" th:text="${user.username}" th:value="${user.id}"></option>
         </select>
     </div>
+    <input type="hidden" th:field="*{id}">
     <input type="submit" class="btn btn-block btn-primary">
 </form>
-
 
 
 </body>

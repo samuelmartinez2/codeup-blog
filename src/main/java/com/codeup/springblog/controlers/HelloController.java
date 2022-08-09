@@ -1,14 +1,24 @@
 package com.codeup.springblog.controlers;
-
+import com.codeup.springblog.services.EmailService;
+import com.codeup.springblog.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class HelloController {
+    private final EmailService emailService;
+    private UserRepository usersDao;
+    @Value("$spring.mail.from")
+    private String from;
+
+    public HelloController(EmailService emailService, UserRepository usersDao) {
+        this.emailService = emailService;
+        this.usersDao = usersDao;
+    }
 
     @GetMapping("/hello")
-
     public String hello(Model model){
 //        model.addAttribute("name","world");
         return "hello";
@@ -16,7 +26,9 @@ public class HelloController {
 
     @RequestMapping(path = "/hello/{name}", method = RequestMethod.GET)
     public String helloToYou(@PathVariable String name, Model model) {
+        System.out.println(from);
         model.addAttribute("name", name);
+        emailService.prepareAndSend(usersDao.findByUsername(name), "I just emailed to say Hi", "how are you doing");
         return "hello";
     }
 

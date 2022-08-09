@@ -1,30 +1,30 @@
 package com.codeup.springblog.controlers;
 import com.codeup.springblog.models.Post;
-import com.codeup.springblog.models.Tag;
+import com.codeup.springblog.models.Product;
 import com.codeup.springblog.models.Toy;
 import com.codeup.springblog.repositories.PostRepository;
-import com.codeup.springblog.repositories.TagRepository;
 import com.codeup.springblog.repositories.UserRepository;
+import com.codeup.springblog.services.EmailService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
-
 @Controller
 public class PostController {
+    private final EmailService emailService;
     private PostRepository postDao;
     private UserRepository userDao;
-    private TagRepository tagDao;
+    @Value("$spring.mail.from")
+    private String from;
 
-    public PostController(PostRepository postDao, UserRepository userDao, TagRepository tagDao) {
+    public PostController(EmailService emailService, PostRepository postDao, UserRepository userDao) {
+        this.emailService = emailService;
         this.postDao = postDao;
         this.userDao = userDao;
-        this.tagDao = tagDao;
     }
+
 
     @GetMapping("/posts")
     public String viewAllPage(Model model) {
@@ -49,7 +49,6 @@ public class PostController {
         return "/posts/show";
     }
 
-
 //    @GetMapping("posts/create")
 //    public String showPostForm(Model model) {
 //        model.addAttribute("user", userDao.findAll());
@@ -65,37 +64,44 @@ public class PostController {
 //            postDao.delete(tittle, body);
 //    return"/posts/index";
 //}
-        @GetMapping("/posts/create")
-        public String createPostPage(Model model) {
-        model.addAttribute("users", userDao.findAll());
-        return "/posts/create";
-}
+//    ????????????? this is one way to do it.?????????????????????
+//        @GetMapping("/posts/create")
+//        public String createPostPage(Model model) {
+//        model.addAttribute("users", userDao.findAll());
+//        return "/posts/create";
+//}
+//        @PostMapping("/posts/create")
+//        public String savePost(@RequestParam(name = "user") Long id,@RequestParam(name = "body") String body, @RequestParam(name = "tittle") String tittle) {
+////            postDao.save(new Post(tittle, body));
+////            return "redirect:/posts";
+//            Post newPost = new Post(tittle,body,userDao.getById(id));
+//            postDao.save(newPost);
+//            return "redirect:/posts";
+//        }
+//    ????????????????this is the other way to do it wth Model binding???????????????????????
 
-        @PostMapping("/posts/create")
-        public String savePost(@RequestParam(name = "user") Long id,@RequestParam(name = "body") String body, @RequestParam(name = "tittle") String tittle) {
-//            postDao.save(new Post(tittle, body));
-//            return "redirect:/posts";
-            Post newPost = new Post(tittle,body,userDao.getById(id));
-            postDao.save(newPost);
-            return "redirect:/posts";
-        }
-    @GetMapping("/tag/create")
-    public String createTag(Model model) {
-        model.addAttribute("tags", tagDao.findAll());
-        return "/tags/create";
+    @GetMapping("/posts/create")
+    public String createPostPage(Model model) {
+        model.addAttribute("users", userDao.findAll());
+        model.addAttribute("post", new Post());
+        return "/posts/create";
     }
+
     @PostMapping("/posts/create")
-    public String savePost(@RequestParam(name = "user") Long id,@RequestParam(name = "body") String body, @RequestParam(name = "tittle") String tittle,@RequestParam(name ="tag") List tags_id) {
-//            postDao.save(new Post(tittle, body));
-//            return "redirect:/posts";
-        Post newPost = new Post(tittle,body,userDao.getById(id),tagDao.getById(tags_id));
-        postDao.save(newPost);
+    public String create(@ModelAttribute Post post){
+//        post.setUser(userDao.getById(1L));
+        System.out.println(from);
+        postDao.save(post);
+        emailService.prepareAndSend(userDao.findByUsername("123"), "this is to test the email functionality!", "How are you doing? This is my third attempt at doing did. I had to hard code a user i already had in order for it to work.");
         return "redirect:/posts";
     }
 
-
-
-
+    @GetMapping("/posts/{id}/edit")
+    public String editProduct(Model model, @PathVariable long id) {
+        model.addAttribute("users", userDao.findAll());
+        model.addAttribute("post", postDao.getById(id));
+        return "posts/create";
+    }
 
 
 //        public String createPost(String tittle, String body) {

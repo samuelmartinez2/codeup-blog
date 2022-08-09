@@ -1,5 +1,4 @@
 package com.codeup.springblog.models;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,13 +15,20 @@ public class User {
     @Column(length = 100, nullable = false)
     private String email;
 
-    @Column(length = 100 , nullable = false)
+    @Column(length = 250 , nullable = false)
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts;
 
     public User() {
+    }
+
+    public User(User copy) {
+        this.id = copy.id;
+        this.username = copy.username;
+        this.email = copy.email;
+        this.password = copy.password;
     }
 
 
