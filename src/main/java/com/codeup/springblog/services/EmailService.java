@@ -1,5 +1,6 @@
 package com.codeup.springblog.services;
 
+import com.codeup.springblog.models.Post;
 import com.codeup.springblog.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,12 +18,13 @@ public class EmailService {
     @Value("${spring.mail.from}")
     private String from;
 
-    public void prepareAndSend(User user, String subject, String body) {
+    public void prepareAndSend(Post post, String subject) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom(from);
-        msg.setTo(user.getEmail());
+        msg.setTo(post.getUser().getEmail());
         msg.setSubject(subject);
-        msg.setText(body);
+        msg.setText(String.format("Your post has the following information:%nTitle: %s%nBody: %s", post.getTittle(), post.getBody()));
+
 
         try{
             this.emailSender.send(msg);

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head th:replace="fragment.html :: header">
     <meta charset="UTF-8">
     <title>Show one</title>
@@ -9,12 +10,27 @@
 <h1>Show one </h1>
 
 <main class="container">
-    <div class="col bg-primary card">
-        <h1 th:text="${post.tittle}"></h1>
-        <p th:text="${post.body}"></p>
-        <p class="d-flex justify-content-center" th:if="${post.user != null}" th:text="${post.user.email}"></p>
-        <p class="d-flex justify-content-center" th:if="${post.user == null}"> no user email</p>
-    </div>
+    <h1> This is your selected post </h1>
+
+    <h1 th:text="${singlePost.getTittle()}"></h1>
+    <p th:text="${singlePost.getBody()}"></p>
+    <p th:if="${singlePost.user != null}" th:text="${singlePost.user.email}"></p>
+    <p th:if="${singlePost.user == null}">No Assigned User.</p>
+    <th:block th:if="${singlePost.user.id == #authentication.principal.id}">
+        <a th:href="@{/posts/{id}/edit (id = ${singlePost.getId()})}" class="btn btn-primary">Edit</a>
+
+        <form onsubmit="confirm('Are you sure you want to delete this post? Once it has been deleted, it cannot be retrieved.')"
+              th:action="@{/posts/{id}/delete (id = ${singlePost.getId()})}" th:method="POST">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </th:block>
+
+<!--    <div class="col bg-primary card">-->
+<!--        <h1 th:text="${post.tittle}"></h1>-->
+<!--        <p th:text="${post.body}"></p>-->
+<!--        <p class="d-flex justify-content-center" th:if="${post.user != null}" th:text="${post.user.email}"></p>-->
+<!--&lt;!&ndash;        <p class="d-flex justify-content-center" th:if="${post.user == null}"> no user email</p>&ndash;&gt;-->
+<!--    </div>-->
 </main>
 </body>
 </html>

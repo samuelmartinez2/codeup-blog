@@ -26,9 +26,9 @@ public class HelloController {
 
     @RequestMapping(path = "/hello/{name}", method = RequestMethod.GET)
     public String helloToYou(@PathVariable String name, Model model) {
-        System.out.println(from);
+
         model.addAttribute("name", name);
-        emailService.prepareAndSend(usersDao.findByUsername(name), "I just emailed to say Hi", "how are you doing");
+
         return "hello";
     }
 

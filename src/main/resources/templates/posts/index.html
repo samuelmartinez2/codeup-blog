@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragment.html :: header">
     <meta charset="UTF-8">
 
@@ -10,16 +10,17 @@
 <h1>Show all </h1>
 
 <main class="container row d-flex justify-content-center">
+    <h1>here are all the posts</h1>
     <div class=" row col-3 card-group border border-5 border-dark d-inline margin m-4 bg-danger " th:each="post : ${posts}">
         <h1 class="d-flex justify-content-center" th:text="${post.tittle}"></h1>
+        <a th:href="@{/posts/{id} (id = ${post.id})}"><h1 style="color:black">See Post</h1></a>
         <p class="d-flex justify-content-center" th:text="${post.body}"></p>
         <p class="d-flex justify-content-center" th:if="${post.user != null}" th:text="${post.user.email}"></p>
         <p class="d-flex justify-content-center" th:if="${post.user == null}">no assigned user</p>
-        <form class="d-flex justify-content-center" action="/posts" method="post">
-                <button name="singleAd" type="submit" th:value="${post.id}">See Ad</button>
+        <form th:action="@{/posts}" th:method="POST" th:object="${post}">
+                <button name="viewOnePost" type="submit" th:value="${post.id}">See Ad</button>
 <!--                <button name="deleteAd" type="submit" th:value="${post.id}">delete Ad</button>-->
-            </form>
-        </div>
+        </form>
     </div>
 </main>
 <footer th:replace="fragment.html :: footer"></footer>

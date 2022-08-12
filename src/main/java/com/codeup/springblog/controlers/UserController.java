@@ -34,10 +34,11 @@ public class UserController {
         return "redirect:/profile";
     }
 @GetMapping("/profile")
-    public String showProfile() {
+    public String showProfile(Model model) {
         // this is how to get the current user//
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        currentUser.getId();
+//        currentUser.getId();
+        model.addAttribute("currentUser", currentUser);
         return "profile";
 }
 
